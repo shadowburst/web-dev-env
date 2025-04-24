@@ -1,0 +1,53 @@
+services:
+  traefik:
+    container_name: traefik
+    command: --api.insecure=true --providers.docker
+    image: traefik:v3.3
+    networks:
+      - dev-env
+    ports:
+      - "80:80"
+      - "8080:8080"
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  mariadb:
+    container_name: mariadb
+    depends_on:
+      - traefik
+    environment:
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "1"
+    image: mariadb:lts
+    networks:
+      - dev-env
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - "mysql-db:/var/lib/mysql"
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    depends_on:
+      - traefik
+      - mariadb
+    environment:
+      PMA_HOSTS: "mariadb"
+      PMA_USER: "root"
+      UPLOAD_LIMIT: "1G"
+    image: phpmyadmin:latest
+    labels:
+      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.localhost`)"
+    networks:
+      - dev-env
+    ports:
+      - "8001:80"
+    restart: always
+
+networks:
+  dev-env:
+    external: true
+
+volumes:
+  mysql-db: null
