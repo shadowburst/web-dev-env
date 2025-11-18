@@ -31,23 +31,43 @@ services:
     volumes:
       - "mysql-db:/var/lib/mysql"
 
-  phpmyadmin:
-    container_name: phpmyadmin
+  pgsql:
+    container_name: pgsql
     depends_on:
       - traefik
-      - mariadb
     environment:
-      PMA_HOSTS: "mariadb"
-      PMA_USER: "root"
-      UPLOAD_LIMIT: "1G"
-    image: phpmyadmin:latest
-    labels:
-      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.localhost`)"
+      PGPASSWORD: "password"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "password"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "default", "-U", "root"]
+      retries: 3
+      timeout: 5s
+    image: "postgres:alpine"
     networks:
       - dev-env
     ports:
-      - "8001:80"
+      - "5432:5432"
     restart: always
+    volumes:
+      - "pgsql-db:/var/lib/postgresql/data"
+
+  cloudbeaver:
+    container_name: cloudbeaver
+    depends_on:
+      - traefik
+      - mariadb
+      - pgsql
+    image: dbeaver/cloudbeaver:latest
+    labels:
+      - "traefik.http.routers.cloudbeaver.rule=Host(`cloudbeaver.localhost`)"
+    networks:
+      - dev-env
+    ports:
+      - "8978:8978"
+    restart: always
+    volumes:
+      - "cloudbeaver-data:/opt/cloudbeaver/workspace"
 
 networks:
   dev-env:
@@ -55,3 +75,5 @@ networks:
 
 volumes:
   mysql-db: null
+  pgsql-db: null
+  cloudbeaver-data: null

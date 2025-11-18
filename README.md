@@ -28,3 +28,31 @@ docker network create --driver bridge dev-env
 ```
 
 - Start the services and use them for web dev
+
+## Features
+
+### MariaDB
+
+| Name     | Value     |
+| -------- | --------- |
+| Host     | 'mariadb' |
+| Port     | 3306      |
+| User     | 'root'    |
+| Password | ''        |
+
+### PostgreSQL
+
+| Name     | Value        |
+| -------- | ------------ |
+| Host     | 'postgresql' |
+| Port     | 5432         |
+| User     | 'root'       |
+| Password | 'password'   |
+
+### Cloudbeaver
+
+| Name | Value                          |
+| ---- | ------------------------------ |
+| Url  | 'http://cloudbeaver.localhost' |
+
+> [!tip]: In order to use this service with the included databases, you need to create database connections with the above parameters.
