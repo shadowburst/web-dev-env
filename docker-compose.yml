@@ -18,6 +18,10 @@ services:
       - traefik
     environment:
       MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "1"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      retries: 3
+      timeout: 5s
     image: mariadb:lts
     networks:
       - dev-env
