@@ -55,9 +55,10 @@ services:
   cloudbeaver:
     container_name: cloudbeaver
     depends_on:
-      - traefik
-      - mariadb
-      - pgsql
+      mariadb:
+        condition: service_healthy
+      pgsql:
+        condition: service_healthy
     image: dbeaver/cloudbeaver:latest
     labels:
       - "traefik.http.routers.cloudbeaver.rule=Host(`cloudbeaver.localhost`)"
