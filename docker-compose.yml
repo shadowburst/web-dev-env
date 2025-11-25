@@ -23,6 +23,8 @@ services:
       retries: 3
       timeout: 5s
     image: mariadb:lts
+    labels:
+      - "traefik.http.routers.mariadb.rule=Host(`mariadb.localhost`)"
     networks:
       - dev-env
     ports:
@@ -44,6 +46,8 @@ services:
       retries: 3
       timeout: 5s
     image: "postgres:alpine"
+    labels:
+      - "traefik.http.routers.pgsql.rule=Host(`pgsql.localhost`)"
     networks:
       - dev-env
     ports:
