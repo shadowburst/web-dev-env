@@ -41,8 +41,8 @@ Traefik is used to simplify access to services by allowing a per-project configu
 | User     | root                   |
 | Password | password               |
 
-### GUI tools
+## Gui
 
-| Tool        | Url                          |
-| ----------- | ---------------------------- |
-| CloudBeaver | http://cloudbeaver.localhost |
+For accessing the databases through a gui, you can use any client, using the above connection parameters.
+
+I recommend using TablePlus (https://tableplus.com/), which is free for basic use.

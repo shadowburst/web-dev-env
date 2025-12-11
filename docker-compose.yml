@@ -2,7 +2,7 @@ services:
   traefik:
     container_name: traefik
     command: --api.insecure=true --providers.docker
-    image: traefik:v3.3
+    image: traefik:latest
     networks:
       - dev-env
     ports:
@@ -56,24 +56,6 @@ services:
     volumes:
       - "pgsql-db:/var/lib/postgresql/data"
 
-  cloudbeaver:
-    container_name: cloudbeaver
-    depends_on:
-      mariadb:
-        condition: service_healthy
-      pgsql:
-        condition: service_healthy
-    image: dbeaver/cloudbeaver:latest
-    labels:
-      - "traefik.http.routers.cloudbeaver.rule=Host(`cloudbeaver.localhost`)"
-    networks:
-      - dev-env
-    ports:
-      - "8978:8978"
-    restart: always
-    volumes:
-      - "cloudbeaver-data:/opt/cloudbeaver/workspace"
-
 networks:
   dev-env:
     external: true
@@ -81,4 +63,3 @@ networks:
 volumes:
   mysql-db: null
   pgsql-db: null
-  cloudbeaver-data: null
