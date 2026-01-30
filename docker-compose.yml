@@ -1,7 +1,10 @@
 services:
   traefik:
     container_name: traefik
-    command: --api.insecure=true --providers.docker
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--providers.docker.network=dev-env"
     image: traefik:latest
     networks:
       - dev-env
